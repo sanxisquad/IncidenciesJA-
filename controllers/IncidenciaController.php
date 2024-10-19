@@ -22,44 +22,45 @@ class IncidenciaController {
             $this->incidencia->descripcio = $_POST['descripcio'];
             $this->incidencia->prioritat = $_POST['prioritat'];
             $this->incidencia->estat = $_POST['estat'];
-            // $this->incidencia->id_usuari = $_POST['id_usuari'];
-            // $this->incidencia->id_tipo_incidencia = $_POST['id_tipo_incidencia'];
+            $this->incidencia->id_usuari = $_POST['id_usuari'];
+            $this->incidencia->id_tipo_incidencia = $_POST['id_tipo_incidencia'];
 
             if ($this->incidencia->crear()) {
-                header('Location: ../views/incidenciesview.php');
+                header('Location: ../public/index.php');
                 exit();
             } else {
-                echo "Error al crear la incidencia.";
+                echo "<script>alert('Error al crear la incidencia.');</script>";
             }
         }
     }
 
     public function actualitzar() {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            $this->incidencia->id_incidencia = $_POST['id_incidencia'];
-            $this->incidencia->descripcio = $_POST['descripcio'];
-            $this->incidencia->prioritat = $_POST['prioritat'];
-            $this->incidencia->estat = $_POST['estat'];
-            $this->incidencia->id_tipo_incidencia = $_POST['id_tipo_incidencia'];
-
+            $this->incidencia->id_incidencia = $_POST['id_incidencia_veure'];
+            $this->incidencia->descripcio = $_POST['descripcio_veure'];
+            $this->incidencia->prioritat = $_POST['prioritat_veure'];
+            $this->incidencia->estat = $_POST['estat_veure'];
+            $this->incidencia->id_tipo_incidencia = $_POST['id_tipo_incidencia_veure'];
+            $this->incidencia->titol = $_POST['titol_veure'];
+            
             if ($this->incidencia->actualitzar()) {
                 header('Location: ../public/index.php');
                 exit();
             } else {
-                echo "Error al actualitzar la incidencia.";
+                echo "<script>alert('Error al actualitzar la incidencia.');</script>";
             }
         }
     }
 
     public function eliminar() {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            $this->incidencia->id_incidencia = $_POST['id_incidencia'];
+            $this->incidencia->id_incidencia = $_POST['id_incidencia_veure'];
 
             if ($this->incidencia->eliminar()) {
                 header('Location: ../public/index.php');
                 exit();
             } else {
-                echo "Error al eliminar la incidencia.";
+                echo "<script>alert('Error al eliminar la incidencia.');</script>";
             }
         }
     }
@@ -76,12 +77,30 @@ class IncidenciaController {
         $query = "SELECT id_usuari, nom FROM usuaris";
         return $this->conn->query($query);
     }
+
+    public function obtenir_per_id($id) {
+        $this->incidencia->id_incidencia = $id;
+        return $this->incidencia->obtenir_per_id();
+    }
+
+    public function filtre_estat($estat) {
+        return $this->incidencia->obtenir_per_estat($estat);
+    }
+
+    public function mostrarIncidencies() {
+        $title = "Incidencies".$_SESSION['usuari']['nom'];
+        $content = "../views/incidencies.php";
+        $styles = [
+            "../public/css/incidencies.css"
+        ];
+        include '../views/layout.php';
+    }
 }
 
-if (isset($_GET['action'])) {
+if (isset($_REQUEST['action'])) {
     $controller = new IncidenciaController();
-    
-    switch ($_GET['action']) {
+
+    switch ($_REQUEST['action']) {
         case 'crear':
             $controller->crear();
             break;
@@ -91,8 +110,15 @@ if (isset($_GET['action'])) {
         case 'eliminar':
             $controller->eliminar();
             break;
+        case 'obtenir_per_id':
+            if (isset($_POST['id'])) {
+                echo json_encode($controller->obtenir_per_id($_POST['id']));
+            }
+            break;
+        case 'incidencies':
+            break;
         default:
-            echo "Acció no vàlida.";
+            echo "<script>alert('Acció no reconeguda.');</script>";
             break;
     }
 }

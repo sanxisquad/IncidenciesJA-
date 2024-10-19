@@ -13,21 +13,21 @@ class UsuariController {
         $this->usuari = new Usuari($this->conn);
     }
 
-    public function registre() {
-        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            $this->usuari->nom = $_POST['nom'];
-            $this->usuari->cognoms = $_POST['cognoms'];
-            $this->usuari->email = $_POST['email'];
-            $this->usuari->contrasenya = $_POST['contrasenya'];
+    // public function registre() {
+    //     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    //         $this->usuari->nom = $_POST['nom'];
+    //         $this->usuari->cognoms = $_POST['cognoms'];
+    //         $this->usuari->email = $_POST['email'];
+    //         $this->usuari->contrasenya = $_POST['contrasenya'];
 
-            if ($this->usuari->registre()) {
-                header('Location: ../views/login.php');
-                exit();
-            } else {
-                echo "Error al registrar.";
-            }
-        }
-    }
+    //         if ($this->usuari->registre()) {
+    //             header('Location: ../views/login.php');
+    //             exit();
+    //         } else {
+    //             echo "Error al registrar.";
+    //         }
+    //     }
+    // }
 
     public function login() {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -44,10 +44,11 @@ class UsuariController {
                     'imatge' => $user['imatge'],
                     'email' => $user['email']
                 ];
-                header('Location: ../public/index.php');
+                header('Location: ../public/index.php?action=incidencies');
                 exit();
             } else {
-                echo "Credenciales incorrectas.";
+                echo "<script>alert('Usuari o contrasenya incorrectes.');</script>";
+                header('Location: ../public/index.php?action=login');
             }
         }
     }

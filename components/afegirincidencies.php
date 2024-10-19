@@ -13,17 +13,23 @@ $usuaris = $controller->obtenir_usuaris();
     <div class="modal-content">
         <span class="close_modal_afegir">&times;</span>
         <form action="../controllers/IncidenciaController.php?action=crear" method="POST" class="form_afegir">
-            <label for="titol">Títol</label>
-            <input type="text" name="titol" id="titol" required>
-            <label for="titol">Tipus Incidència</label>
-            <select name="id_tipo_incidencia" id="id_tipo_incidencia">
+            <input type="text" name="titol" id="titol" required placeholder="Titol">
+            <select name="id_tipo_incidencia" id="id_tipo_incidencia" required>
+                <option value="">Selecciona un tipus</option>
                 <?php
                 while ($tipus = $tipus_incidencia->fetch_assoc()) {
-                    echo "<option value='" . $tipus['id_tipo_incidencia'] . "'>" . $tipus['nom'] . "</option>";
+                    echo "<option value='" . $tipus['id_tipus_incidencia'] . "'>" . $tipus['nom'] . "</option>";
                 }
                 ?>
             </select>
-            <label for="titol">Prioritat</label>
+            <select name="id_usuari" id="id_usuari" required>
+                <option value="">Selecciona un usuari supervisor</option>
+                <?php
+                while ($usuari = $usuaris->fetch_assoc()) {
+                    echo "<option value='" . $usuari['id_usuari'] . "'>" . $usuari['nom'] . "</option>";
+                }
+                ?>
+            </select>
             <div class="radio_afegir">
                 <label class="radio">
                     <input type="radio" name="prioritat" checked="" value="baixa">
@@ -38,14 +44,13 @@ $usuaris = $controller->obtenir_usuaris();
                     <span class="name">Alta</span>
                 </label>
             </div>
-            <label for="titol">Estat</label>
             <div class="radio_afegir">
                 <label class="radio">
                     <input type="radio" name="estat" checked="" value="pendent">
                     <span class="name">Pendent</span>
                 </label>
                 <label class="radio">
-                    <input type="radio" name="estat" value="en procés">
+                    <input type="radio" name="estat" value="enproces">
                     <span class="name">En Procés</span>
                 </label>
                 <label class="radio">
@@ -53,13 +58,12 @@ $usuaris = $controller->obtenir_usuaris();
                     <span class="name">Resolta</span>
                 </label>
             </div>
-            <label for="titol">Descripció</label>
-            <textarea name="descripcio" id="descripcio"></textarea>
+            <textarea name="descripcio" id="descripcio" requirede placeholder="Descripcio"></textarea>
             <button type="submit">Afegir</button>
         </form>
     </div>
 </div>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 <script>
 $(document).ready(function() {
     var modal = $("#modal_afegir");

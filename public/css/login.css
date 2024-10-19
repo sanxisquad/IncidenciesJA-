@@ -1,0 +1,47 @@
+.body_session {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: var(--color-primary);
+}
+
+.login_container {
+  display: flex;
+  flex-direction: column;
+}
+
+.login_container img {
+  height: 50px;
+  margin: 0 auto;
+}
+
+.login_form {
+  border: var(--color-secondary) 2px solid;
+  margin: 10px;
+  padding: 10px;
+}
+
+.input_group input {
+  padding: 10px;
+  border: none;
+  border-bottom: var(--color-secondary) 2px solid;
+  background: none;
+  width: 100%;
+  margin: 10px 0;
+  color: var(--color-secondary);
+}
+
+.input_group input:focus {
+  outline: none;
+}
+
+.login_form button {
+  padding: 10px;
+  border: none;
+  background: var(--color-secondary);
+  color: var(--color-primary);
+  cursor: pointer;
+  width: 100%;
+  margin-top: 10px;
+}

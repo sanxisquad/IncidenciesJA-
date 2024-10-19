@@ -17,23 +17,28 @@ class Incidencia {
     }
 
     public function crear() {
-        $query = "INSERT INTO " . $this->table . " (titol, descripcio, prioritat, estat, data_creacio) VALUES (?, ?, ?, ?, NOW())";
+        $query = "INSERT INTO " . $this->table . " (titol, descripcio, prioritat, estat, data_creacio, id_usuari, id_tipus_incidencia) VALUES (?, ?, ?, ?, NOW(), ?, ?)";
         $stmt = $this->conn->prepare($query);
 
-        $stmt->bind_param("ssss", $this->titol, $this->descripcio, $this->prioritat, $this->estat);
+        $stmt->bind_param("ssssss", $this->titol, $this->descripcio, $this->prioritat, $this->estat, $this->id_usuari, $this->id_tipo_incidencia);
         return $stmt->execute();
     }
 
     public function obtenir_totes() {
-        $query = "SELECT * FROM " . $this->table;
+        $query = "SELECT i.*, ti.nom as tipus_incidencia, u.nom as nom_usuari_supervisor FROM " . $this->table . " i INNER JOIN tipus_incidencia ti ON i.id_tipus_incidencia = ti.id_tipus_incidencia INNER JOIN usuaris u ON i.id_usuari = u.id_usuari";
         $result = $this->conn->query($query);
+        
+        if ($result === false) {
+            echo "Error en la consulta: " . $this->conn->error;
+            return null;
+        }
         return $result;
     }
 
     public function actualitzar() {
-        $query = "UPDATE " . $this->table . " SET descripcio = ?, prioritat = ?, estat = ?, id_tipo_incidencia = ? WHERE id_incidencia = ?";
+        $query = "UPDATE " . $this->table . " SET titol = ?, descripcio = ?, id_tipus_incidencia = ?, prioritat = ?, estat = ?  WHERE id_incidencia = ?";
         $stmt = $this->conn->prepare($query);
-        $stmt->bind_param("ssiii", $this->descripcio, $this->prioritat, $this->estat, $this->id_tipo_incidencia, $this->id_incidencia);
+        $stmt->bind_param("sssssi", $this->titol, $this->descripcio, $this->id_tipo_incidencia, $this->prioritat, $this->estat, $this->id_incidencia);
         return $stmt->execute();
     }
 
@@ -43,4 +48,26 @@ class Incidencia {
         $stmt->bind_param("i", $this->id_incidencia);
         return $stmt->execute();
     }
+
+    public function obtenir_per_id() {
+        $query = "SELECT i.*, u.nom FROM " . $this->table . " i INNER JOIN usuaris u on u.id_usuari = i.id_usuari WHERE id_incidencia = ?";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bind_param("i", $this->id_incidencia);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        return $result->fetch_assoc();
+    }
+
+    public function obtenir_per_estat($estat) {
+        $query = "SELECT i.*, ti.nom as tipus_incidencia, u.nom as nom_usuari_supervisor 
+                  FROM " . $this->table . " i 
+                  INNER JOIN tipus_incidencia ti ON i.id_tipus_incidencia = ti.id_tipus_incidencia 
+                  INNER JOIN usuaris u ON i.id_usuari = u.id_usuari 
+                  WHERE estat = ?";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bind_param("s", $estat);
+        $stmt->execute();
+        return $stmt->get_result();
+    }
+    
 }

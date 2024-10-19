@@ -1,6 +1,7 @@
 :root {
-    --color-primary: #2E345E;
-    --color-secondary: #292e55;
+    --color-primary: #2E2E2E;
+    --color-secondary: white;
+    --color-tertiary: #b0b0b0;
 }
 * {
     margin: 0;
@@ -12,9 +13,18 @@ body {
     display: flex;
     width: 100%;
     flex-direction: row;
-    font-family: 'Open Sans', sans-serif;
+    font-family: 'Nunito', sans-serif;
 }
 
 .container {
     width: 100%;
+}
+
+@media (max-width: 768px) {
+    body {
+        flex-direction: column;
+    }
+    .container {
+        margin-top: 90px;
+    }
 }
