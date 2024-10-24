@@ -44,7 +44,7 @@ class UsuariController {
                     'imatge' => $user['imatge'],
                     'email' => $user['email']
                 ];
-                header('Location: ../public/index.php?action=incidencies');
+                header('Location: ../public/index.php?action=dashboard');
                 exit();
             } else {
                 echo "<script>alert('Usuari o contrasenya incorrectes.');</script>";
@@ -66,9 +66,6 @@ if (isset($_GET['action'])) {
     $controller = new UsuariController();
     
     switch ($_GET['action']) {
-        case 'registre':
-            $controller->registre();
-            break;
         case 'login':
             $controller->login();
             break;

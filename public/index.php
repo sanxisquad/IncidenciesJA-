@@ -1,9 +1,6 @@
 <?php
 session_start();
-include_once '../controllers/IncidenciaController.php';
-
-$controllerIncidencies = new IncidenciaController();
-$action = $_GET['action'] ?? 'incidencies';
+$action = $_GET['action'] ?? 'dashboard';
 
 if (!isset($_SESSION['usuari']) && $action !== 'login') {
     $action = 'login';
@@ -15,7 +12,30 @@ switch ($action) {
         break;
     
     case 'incidencies':
-        $controllerIncidencies->mostrarIncidencies();
+        $title = "Incidencies".$_SESSION['usuari']['nom'];
+        $content = "../views/incidencies.php";
+        $styles = [
+            "../public/css/incidencies.css"
+        ];
+        include '../views/layout.php';
         break;
+    case 'dashboard':
+        if($_SESSION['usuari']['rol'] == 'administrador'){
+            $title = "Dashboard - Administrador";
+            $content = "../views/dashboardadmin.php";
+            $styles = [
+                "../public/css/dashboardadmin.css"
+            ];
+            include '../views/layout.php';
+        } else if($_SESSION['usuari']['rol'] == 'tecnic'){
+            $title = "Dashboard - ".$_SESSION['usuari']['nom'];
+            $content = "../views/dashboard.php";
+            $styles = [
+                "../public/css/dashboard.css"
+            ];
+            include '../views/layout.php';
+        } else {
+            $action = 'incidencies';
+        }
 }
 ?>

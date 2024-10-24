@@ -1,0 +1,63 @@
+.dashboard {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    margin: 0 10px;
+}
+.dashboard img {
+    height: 40px;
+}
+
+.filter-switch {
+    border: 2px solid var(--color-primary);
+    border-radius: 10px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    height: 50px;
+    width: 100%;
+    margin-top: 10px;
+    overflow: hidden;
+}
+.filter-switch input {
+    display: none;
+}
+.filter-switch label {
+    flex: 1;
+    text-align: center;
+    cursor: pointer;
+    border: none;
+    border-radius: 30px;
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+    transition: all 0.5s;
+    font-weight: 500;
+    font-size: 18px;
+}
+.filter-switch .background {
+    position: absolute;
+    width: 49%;
+    height: 38px;
+    background-color: var(--color-primary);
+    top: 4px;
+    left: 4px;
+    border-radius: 10px;
+    transition: left 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+#option2:checked ~ .background {
+    left: 50%;
+}
+#option1:checked + label[for="option1"] {
+    color: var(--color-secondary);
+    font-weight: bold;
+}
+#option2:checked + label[for="option2"] {
+    color: var(--color-secondary);
+    font-weight: bold;
+}
+#option1:not(:checked) + label[for="option1"],
+#option2:not(:checked) + label[for="option2"] {
+    color: var(--color-primary);
+}
+  

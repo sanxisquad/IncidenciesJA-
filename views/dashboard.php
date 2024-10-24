@@ -1,0 +1,1 @@
+<h1>Aquest es el dashboard</h1>

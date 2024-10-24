@@ -86,15 +86,6 @@ class IncidenciaController {
     public function filtre_estat($estat) {
         return $this->incidencia->obtenir_per_estat($estat);
     }
-
-    public function mostrarIncidencies() {
-        $title = "Incidencies".$_SESSION['usuari']['nom'];
-        $content = "../views/incidencies.php";
-        $styles = [
-            "../public/css/incidencies.css"
-        ];
-        include '../views/layout.php';
-    }
 }
 
 if (isset($_REQUEST['action'])) {
