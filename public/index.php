@@ -20,14 +20,7 @@ switch ($action) {
         include '../views/layout.php';
         break;
     case 'dashboard':
-        if($_SESSION['usuari']['rol'] == 'administrador'){
-            $title = "Dashboard - Administrador";
-            $content = "../views/dashboardadmin.php";
-            $styles = [
-                "../public/css/dashboardadmin.css"
-            ];
-            include '../views/layout.php';
-        } else if($_SESSION['usuari']['rol'] == 'tecnic'){
+        if($_SESSION['usuari']['rol'] != 'usuari'){
             $title = "Dashboard - ".$_SESSION['usuari']['nom'];
             $content = "../views/dashboard.php";
             $styles = [
