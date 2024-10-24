@@ -13,18 +13,18 @@ class Usuari {
         $this->conn = $db;
     }
 
-    public function registre() {
-        $query = "INSERT INTO " . $this->table . " (nom, cognoms, email, contrasenya) VALUES (?, ?, ?, ?)";
-        $stmt = $this->conn->prepare($query);
+    // public function registre() {
+    //     $query = "INSERT INTO " . $this->table . " (nom, cognoms, email, contrasenya) VALUES (?, ?, ?, ?)";
+    //     $stmt = $this->conn->prepare($query);
 
-        if ($stmt) {
-            $hashedPassword = password_hash($this->contrasenya, PASSWORD_DEFAULT);
-            $stmt->bind_param("ssss", $this->nom, $this->cognoms, $this->email, $hashedPassword);
-            return $stmt->execute();
-        }
+    //     if ($stmt) {
+    //         $hashedPassword = password_hash($this->contrasenya, PASSWORD_DEFAULT);
+    //         $stmt->bind_param("ssss", $this->nom, $this->cognoms, $this->email, $hashedPassword);
+    //         return $stmt->execute();
+    //     }
 
-        return false;
-    }
+    //     return false;
+    // }
 
     public function login() {
         $query = "SELECT id_usuari, nom, cognoms, contrasenya, rol, imatge FROM " . $this->table . " WHERE email = ? LIMIT 1";
